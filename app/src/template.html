@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; form-action 'none'; base-uri 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="hbod-build" content="{{build}}">
+<title>HBOD · Training load, wellness and health monitor</title>
+<link rel="icon" href="data:,">
+<!-- build:css app.css -->
+</head>
+<body>
+<a class="skip" href="#view">Skip to the content</a>
+
+<header class="appbar">
+  <div class="brand">
+    <span class="mark" aria-hidden="true">HBOD</span>
+    <h1>HBOD · Training load, wellness and health monitor</h1>
+  </div>
+  <div class="appmeta">
+    <span id="data-through">No data loaded</span>
+    <span class="private">Computed on this device · no data uploaded</span>
+  </div>
+</header>
+
+<nav class="tabs" id="tabs" aria-label="Sections">
+  <button type="button" class="tab" data-tab="squad">Squad</button>
+  <button type="button" class="tab" data-tab="athlete">Athlete</button>
+  <button type="button" class="tab" data-tab="report">Daily report</button>
+  <button type="button" class="tab" data-tab="availability">Availability</button>
+  <button type="button" class="tab" data-tab="summary">Language summary</button>
+  <button type="button" class="tab" data-tab="audit">Audit log</button>
+  <button type="button" class="tab" data-tab="settings">Settings</button>
+  <button type="button" class="tab" data-tab="about">About</button>
+</nav>
+
+<div id="banners"></div>
+<main id="view" tabindex="-1">
+  <noscript>
+    <p class="box">HBOD computes in this page and needs JavaScript. Nothing is sent anywhere: all computation runs
+    on this device.</p>
+  </noscript>
+</main>
+
+<footer class="appfoot">
+  <span id="foot-wording"></span>
+  <span id="foot-version"></span>
+</footer>
+
+<script>
+/*
+ * Start-up guard. Any script error is shown on the page in an element with the identifier "hbod-error", so that
+ * a failure is never silent and an automated check can detect it.
+ */
+(function () {
+  'use strict';
+  var ERROR_ID = 'hbod-error';
+  window.hbodShowError = function (message) {
+    var box = document.getElementById(ERROR_ID);
+    if (!box) {
+      box = document.createElement('div');
+      box.id = ERROR_ID;
+      box.className = 'errorbox';
+      box.setAttribute('role', 'alert');
+      var host = document.getElementById('banners') || document.body;
+      host.insertBefore(box, host.firstChild);
+    }
+    var line = document.createElement('p');
+    line.textContent = String(message);
+    box.appendChild(line);
+  };
+  window.addEventListener('error', function (event) {
+    window.hbodShowError('HBOD stopped on an error: ' + (event.message || 'unknown error') +
+      (event.lineno ? ' (line ' + event.lineno + ')' : ''));
+  });
+  window.addEventListener('unhandledrejection', function (event) {
+    var reason = event.reason;
+    window.hbodShowError('HBOD stopped on an error: ' + (reason && reason.message ? reason.message : String(reason)));
+  });
+})();
+</script>
+<!-- build:js engine.js -->
+<!-- build:js core.js -->
+<!-- build:js report.js optional -->
+<!-- build:js summary.js optional -->
+<!-- build:js demo-data.js -->
+<!-- build:js ui.js -->
+</body>
+</html>

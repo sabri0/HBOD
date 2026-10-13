@@ -1,0 +1,21 @@
+{
+  "name": "hbod",
+  "version": "1.0.0",
+  "description": "HBOD (Hooper-Borg-Oslo-Dergaa): on-device application, state-space engine and simulation code",
+  "private": true,
+  "license": "PolyForm-Noncommercial-1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sabri0/HBOD.git"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "node --test",
+    "build": "node tools/build.js",
+    "build:check": "node tools/build.js --check",
+    "parity": "cd parity && python mk_parity_hbod.py && node parity_hbod.js && node parity_app.js && python compare_parity_hbod.py",
+    "parity:health-gate": "cd parity && node health_gate.js && python mk_health_gate_ref.py js_health_gate.json"
+  }
+}
