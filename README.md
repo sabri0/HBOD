@@ -25,6 +25,9 @@ and holds, as code only:
 The protocol and the frozen analysis plan of the study are registered on the Open Science Framework:
 <https://doi.org/10.17605/OSF.IO/MUWQ3>.
 
+The release that matches the paper, `v1.0.0`, is archived on Zenodo: <https://doi.org/10.5281/zenodo.23342086>
+(all versions: <https://doi.org/10.5281/zenodo.23342085>).
+
 ## What the probability means
 
 > The probability shows how far the athlete's modelled state sits beyond his or her own baseline. It is not an
@@ -132,7 +135,7 @@ every random-number seed. No result file is shipped; every result is regenerated
 
 | Release | Content |
 | --- | --- |
-| `v1.0.0` | The release that matches the paper: HBOD application and engine, File S1, parity test. |
+| `v1.0.0` | The release that matches the paper: HBOD application and engine, File S1, parity test. Archived on Zenodo, DOI [10.5281/zenodo.23342086](https://doi.org/10.5281/zenodo.23342086). |
 | `v0.1.0-rule-based-prototype` | **Archived earlier release.** The rule-based prototype, an unpublished development stage of HBOD and the internal comparator of the paper. It is not HBOD as described in the paper and is kept for reference only. |
 
 Releases tuned on field data will carry version numbers, so that each published result maps to a citable release.
