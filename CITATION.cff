@@ -1,0 +1,43 @@
+cff-version: 1.2.0
+message: >-
+  If you use HBOD, please cite this software release and the paper it accompanies:
+  "Development of an autonomous artificial intelligence agent for training load monitoring: a simulation study
+  and closed-loop in silico trial against the acute-to-chronic workload ratio".
+title: "HBOD: on-device application, state-space engine and simulation code"
+abstract: >-
+  HBOD (Hooper-Borg-Oslo-Dergaa) is an autonomous artificial intelligence agent for daily monitoring of training
+  load, wellness and health. This release holds the HBOD web application, which computes on the coach's device
+  without uploading any data, its state-space engine (a Kalman filter with athlete-specific learning by recursive
+  least squares that reports a probability), the complete simulation code of the paper (Supplementary File S1) and
+  the parity test of the JavaScript engine against the Python code of File S1.
+type: software
+authors:
+  - family-names: Dergaa
+    given-names: Ismail
+    affiliation: "High Institute of Sport and Physical Education of Ksar Said, University of Manouba, Tunisia"
+  - family-names: Barki
+    given-names: Chamseddine
+    affiliation: "Laboratory of Biophysics and Medical Technologies, Higher Institute of Medical Technologies of Tunis, University of Tunis El Manar, Tunisia"
+  - family-names: Barbaria
+    given-names: Sabri
+    affiliation: "Laboratory of Biophysics and Medical Technologies, Higher Institute of Medical Technologies of Tunis, University of Tunis El Manar, Tunisia"
+version: 1.0.0
+date-released: "2026-10-13"
+license: PolyForm-Noncommercial-1.0.0
+repository-code: "https://github.com/sabri0/HBOD"
+url: "https://github.com/sabri0/HBOD"
+keywords:
+  - athlete monitoring
+  - training load
+  - session rating of perceived exertion
+  - Hooper index
+  - wellness
+  - Kalman filter
+  - recursive least squares
+  - fitness-fatigue model
+  - acute-to-chronic workload ratio
+  - simulation study
+identifiers:
+  - type: doi
+    value: 10.17605/OSF.IO/MUWQ3
+    description: "Registered protocol and frozen analysis plan (Open Science Framework)"
