@@ -46,6 +46,7 @@ authors:
     given-names: Karim
     affiliation: "Naufar Centre, Doha, Qatar"
 version: 1.0.0
+doi: 10.5281/zenodo.23342086
 date-released: "2026-10-13"
 license: PolyForm-Noncommercial-1.0.0
 repository-code: "https://github.com/sabri0/HBOD"
@@ -62,6 +63,9 @@ keywords:
   - acute-to-chronic workload ratio
   - simulation study
 identifiers:
+  - type: doi
+    value: 10.5281/zenodo.23342085
+    description: "Zenodo archive, all versions"
   - type: doi
     value: 10.17605/OSF.IO/MUWQ3
     description: "Registered protocol and frozen analysis plan (Open Science Framework)"
