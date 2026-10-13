@@ -1,22 +1,53 @@
 {
   "title": "HBOD: on-device application, state-space engine and simulation code",
   "upload_type": "software",
-  "version": "1.0.0",
   "access_right": "open",
   "license": "polyform-noncommercial-1.0.0",
   "description": "<p>HBOD (Hooper-Borg-Oslo-Dergaa) is an autonomous artificial intelligence agent for daily monitoring of training load, wellness and health. This release matches the paper <em>Development of an autonomous artificial intelligence agent for training load monitoring: a simulation study and closed-loop in silico trial against the acute-to-chronic workload ratio</em>.</p><p>It holds (1) the HBOD web application, which is free for academic and training use and computes on the coach's device without uploading any data; (2) its state-space engine, a Kalman filter on fitness, fatigue and wellness strain with athlete-specific learning by recursive least squares, which reports the posterior probability that the athlete's modelled state exceeds his or her own baseline (this probability is not an injury risk); (3) the complete simulation code of the paper (Supplementary File S1); and (4) the parity test of the JavaScript engine against the Python code of File S1.</p><p>The acute-to-chronic workload ratio is displayed for planning only and triggers no decision. The rule-based prototype compared in the paper is kept only as the archived earlier release v0.1.0-rule-based-prototype.</p><p>The protocol and the frozen analysis plan are registered on the Open Science Framework: https://doi.org/10.17605/OSF.IO/MUWQ3.</p>",
   "creators": [
     {
       "name": "Dergaa, Ismail",
-      "affiliation": "High Institute of Sport and Physical Education of Ksar Said, University of Manouba, Tunisia"
+      "affiliation": "High Institute of Sport and Physical Education of Ksar Said, University of Manouba, Manouba, Tunisia"
     },
     {
       "name": "Barki, Chamseddine",
-      "affiliation": "Laboratory of Biophysics and Medical Technologies, Higher Institute of Medical Technologies of Tunis, University of Tunis El Manar, Tunisia"
+      "affiliation": "Laboratory of Biophysics and Medical Technologies, Higher Institute of Medical Technologies of Tunis (ISTMT), University of Tunis El Manar, Tunis, Tunisia"
     },
     {
       "name": "Barbaria, Sabri",
-      "affiliation": "Laboratory of Biophysics and Medical Technologies, Higher Institute of Medical Technologies of Tunis, University of Tunis El Manar, Tunisia"
+      "affiliation": "Laboratory of Biophysics and Medical Technologies, Higher Institute of Medical Technologies of Tunis (ISTMT), University of Tunis El Manar, Tunis, Tunisia"
+    },
+    {
+      "name": "Ceylan, Halil İbrahim",
+      "affiliation": "Physical Education and Sports Teaching Department, Faculty of Sports Sciences, Atatürk University, Erzurum, Türkiye"
+    },
+    {
+      "name": "Dhahbi, Wissem",
+      "affiliation": "Research Unit Sport Sciences, Health and Movement, High Institute of Sports and Physical Education of Kef, University of Jendouba, Kef, Tunisia"
+    },
+    {
+      "name": "Mujika, Iñigo",
+      "affiliation": "Department of Physiology, Faculty of Medicine and Nursing, University of the Basque Country (EHU), Leioa, Spain"
+    },
+    {
+      "name": "Pyne, David B.",
+      "affiliation": "Research Institute for Sport and Exercise, University of Canberra, Canberra, ACT, Australia"
+    },
+    {
+      "name": "Ernez, Samia",
+      "affiliation": "Heart Failure Research Laboratory (LR12SP09), Faculty of Medicine of Sousse, Farhat Hached Hospital, University of Sousse, Sousse, Tunisia"
+    },
+    {
+      "name": "Ben Saad, Helmi",
+      "affiliation": "Heart Failure Research Laboratory (LR12SP09), Faculty of Medicine of Sousse, Farhat Hached Hospital, University of Sousse, Sousse, Tunisia"
+    },
+    {
+      "name": "Boussi Rahmouni, Hanene",
+      "affiliation": "Laboratory of Biophysics and Medical Technologies, Higher Institute of Medical Technologies of Tunis (ISTMT), University of Tunis El Manar, Tunis, Tunisia"
+    },
+    {
+      "name": "Chamari, Karim",
+      "affiliation": "Naufar Centre, Doha, Qatar"
     }
   ],
   "keywords": [
@@ -34,9 +65,7 @@
   "related_identifiers": [
     {
       "identifier": "10.17605/OSF.IO/MUWQ3",
-      "relation": "isDocumentedBy",
-      "resource_type": "other",
-      "scheme": "doi"
+      "relation": "isDocumentedBy"
     }
   ]
 }

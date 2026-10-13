@@ -14,13 +14,37 @@ type: software
 authors:
   - family-names: Dergaa
     given-names: Ismail
-    affiliation: "High Institute of Sport and Physical Education of Ksar Said, University of Manouba, Tunisia"
+    affiliation: "High Institute of Sport and Physical Education of Ksar Said, University of Manouba, Manouba, Tunisia"
   - family-names: Barki
     given-names: Chamseddine
-    affiliation: "Laboratory of Biophysics and Medical Technologies, Higher Institute of Medical Technologies of Tunis, University of Tunis El Manar, Tunisia"
+    affiliation: "Laboratory of Biophysics and Medical Technologies, Higher Institute of Medical Technologies of Tunis (ISTMT), University of Tunis El Manar, Tunis, Tunisia"
   - family-names: Barbaria
     given-names: Sabri
-    affiliation: "Laboratory of Biophysics and Medical Technologies, Higher Institute of Medical Technologies of Tunis, University of Tunis El Manar, Tunisia"
+    affiliation: "Laboratory of Biophysics and Medical Technologies, Higher Institute of Medical Technologies of Tunis (ISTMT), University of Tunis El Manar, Tunis, Tunisia"
+  - family-names: Ceylan
+    given-names: Halil İbrahim
+    affiliation: "Physical Education and Sports Teaching Department, Faculty of Sports Sciences, Atatürk University, Erzurum, Türkiye"
+  - family-names: Dhahbi
+    given-names: Wissem
+    affiliation: "Research Unit Sport Sciences, Health and Movement, High Institute of Sports and Physical Education of Kef, University of Jendouba, Kef, Tunisia"
+  - family-names: Mujika
+    given-names: Iñigo
+    affiliation: "Department of Physiology, Faculty of Medicine and Nursing, University of the Basque Country (EHU), Leioa, Spain"
+  - family-names: Pyne
+    given-names: David B.
+    affiliation: "Research Institute for Sport and Exercise, University of Canberra, Canberra, ACT, Australia"
+  - family-names: Ernez
+    given-names: Samia
+    affiliation: "Heart Failure Research Laboratory (LR12SP09), Faculty of Medicine of Sousse, Farhat Hached Hospital, University of Sousse, Sousse, Tunisia"
+  - family-names: Ben Saad
+    given-names: Helmi
+    affiliation: "Heart Failure Research Laboratory (LR12SP09), Faculty of Medicine of Sousse, Farhat Hached Hospital, University of Sousse, Sousse, Tunisia"
+  - family-names: Boussi Rahmouni
+    given-names: Hanene
+    affiliation: "Laboratory of Biophysics and Medical Technologies, Higher Institute of Medical Technologies of Tunis (ISTMT), University of Tunis El Manar, Tunis, Tunisia"
+  - family-names: Chamari
+    given-names: Karim
+    affiliation: "Naufar Centre, Doha, Qatar"
 version: 1.0.0
 date-released: "2026-10-13"
 license: PolyForm-Noncommercial-1.0.0
