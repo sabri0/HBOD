@@ -1,0 +1,34 @@
+%%{init: {"theme":"base","themeVariables":{"fontFamily":"Arial","fontSize":"15px","primaryColor":"#ffffff","primaryBorderColor":"#000000","lineColor":"#000000","primaryTextColor":"#000000"},"flowchart":{"wrappingWidth":320,"nodeSpacing":30,"rankSpacing":45}}}%%
+flowchart TB
+  subgraph A["Data-generating model"]
+    direction LR
+    A1["Priors on 24 parameters<br/>load, physiology, injury,<br/>illness, reporting"]
+    A2["Squad season<br/>25 athletes × 238 days,<br/>periodised plan, congested weeks"]
+    A3["Latent physiology<br/>Busso variable dose-response"]
+    A4["Events: injury hazard with frailty<br/>illness with incubation and prodrome"]
+    A5["Observed data: sRPE with rounding,<br/>Hooper items by ordered probit,<br/>reporting styles, MNAR missingness"]
+    A1 --> A2 --> A3 --> A4 --> A5
+  end
+  subgraph B["Calibration"]
+    direction LR
+    B1["History matching<br/>two waves × 32,768 Sobol points"]
+    B2["Five targets: weekly sRPE, injury incidence,<br/>illness share, unavailability, compliance"]
+    B3["Non-implausible pool<br/>(implausibility below 2)"]
+    B1 --> B2 --> B3
+  end
+  subgraph C["Nine signals compared"]
+    direction LR
+    C1["Rule-based prototype"]
+    C2["ACWR: coupled, uncoupled<br/>and EWMA; week-to-week change"]
+    C3["Training stress balance,<br/>wellness z score"]
+    C4["HBOD adaptive state-space agent<br/>Kalman filter + RLS<br/>posterior exceedance probability;<br/>HBOD without wellness"]
+    C1 ~~~ C2 ~~~ C3 ~~~ C4
+  end
+  subgraph D["Performance measures"]
+    direction LR
+    D1["Open loop, 1000 worlds:<br/>AUROC, AP, net benefit,<br/>matched 10% alert budget"]
+    D2["Closed-loop in silico trial:<br/>alert-triggered deload vs<br/>random-alert placebo (CRN)"]
+    D3["Robustness grid 5 × 5,<br/>Sobol indices with dummy,<br/>exploratory dose analysis,<br/>checks of model structure"]
+    D1 ~~~ D2 ~~~ D3
+  end
+  A --> B --> C --> D

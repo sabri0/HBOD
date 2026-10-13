@@ -1,0 +1,15 @@
+import sys; sys.path.insert(0, '../sim'); sys.path.insert(0, '.')
+import numpy as np, json
+from style import *
+RB = json.load(open('../sim/summary_rob.json'))
+fig, ax = plt.subplots(figsize=(5.0, 3.9))
+D = np.array(RB['D']); Dhi = np.array(RB['Dhi'])
+im = ax.imshow(D, cmap='Blues_r', vmin=-1.0, vmax=0.0, origin='lower', aspect='auto')
+yy, xx = np.where(Dhi < 0)
+ax.scatter(xx, yy, s=14, c='white', edgecolors='black', linewidths=0.5, zorder=3)
+ax.set_xticks(range(5)); ax.set_xticklabels(['%g' % v for v in RB['NU']]); ax.set_yticks(range(5)); ax.set_yticklabels(['%g' % v for v in RB['SU']])
+ax.set_xlabel('MNAR strength (ν)', fontsize=9); ax.set_ylabel('Share of under-reporters', fontsize=9); ax.tick_params(labelsize=8)
+cb = fig.colorbar(im, ax=ax, fraction=0.05, pad=0.04); cb.set_label('Days lost per 100 athlete-days,\nHBOD minus best ACWR policy', fontsize=8)
+cb.ax.tick_params(labelsize=7.5)
+ax.spines['top'].set_visible(True); ax.spines['right'].set_visible(True)
+fig.savefig('figS3.png', bbox_inches='tight'); print('ok')
