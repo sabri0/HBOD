@@ -1,0 +1,38 @@
+Horodateur,Nom d'utilisateur,Qui es-tu ?,Moment de la séance,Durée (min),Intensité ressentie (CR-10),Fatigue,Stress,Courbatures,Sommeil,Douleur ou gêne ?,Localisation,OSTRC_Q1,OSTRC_Q2,OSTRC_Q3,OSTRC_Q4
+01/03/2026 20:00:00,amira@club.example,Amira,Soir,60,5,2,3,2,2,Non,,,,,
+02/03/2026 20:00:00,amira@club.example,Amira,Soir,"7,5",6 - Dur,2,3,2,2,Oui,"Genou, droit",8,0,0,8
+03/03/2026 20:00:00,amira@club.example,Amira,Soir,60,5,2,3,2,2,Non,,,,,
+09/03/2026 20:00:00,amira@club.example,Amira,Soir,60,5,2,3,2,2,Non,,,,,
+10/03/2026 20:00:00,amira@club.example,Amira,Soir,60,5,2,3,2,2,Non,,,,,
+2026-03-01 20:00:00,bilal@club.example,Bilal,Soir,60,5,2,3,2,2,No,,"0,5",0,0,0
+2026-03-02 20:00:00,bilal@club.example,Bilal,Soir,60,5,2,3,2,2,No,,"8,5",0,0,0
+2026-03-03 20:00:00,bilal@club.example,Bilal,Soir,60,5,2,3,2,2,No,,9.5,0,0,0
+2026-03-04 20:00:00,bilal@club.example,Bilal,Soir,60,5,2,3,2,2,No,,16.5,0,0,0
+2026-03-05 20:00:00,bilal@club.example,Bilal,Soir,60,5,2,3,2,2,No,,17.5,0,0,0
+2026-03-06 20:00:00,bilal@club.example,Bilal,Soir,60,5,2,3,2,2,No,,2.5,0,0,0
+2026-03-07 20:00:00,bilal@club.example,Bilal,Soir,60,5,2,3,2,2,No,,0,0,0,0
+3/1/2026 8:00:00 PM,chloé@club.example,Chloé,Soir,60,5,2,3,2,2,Yes,Back,Full participation without health problems,No reduction,No effect,Severe
+3/5/2026 8:00:00 PM,chloé@club.example,Chloé,Soir,60,5,2,3,2,2,Yes,Back,Full participation but with health problems,To a major extent,No effect,Mild
+3/9/2026 8:00:00 PM,chloé@club.example,Chloé,Soir,60,5,2,3,2,2,No,Back,Reduced participation due to health problems,To a minor extent,To a moderate extent,Moderate
+2026/03/01 20:00:00,driss@club.example,Driss,Soir,60,5,2,3,2,2,Oui,,,,,
+2026/03/02 20:00:00,driss@club.example,Driss,Soir,60,5,2,3,2,2,Non,Cheville,,,,
+2026/03/03 08:00:00,driss@club.example,Driss,Matin,60,5,2,3,2,2,Oui,,,,,
+2026/03/03 20:00:00,driss@club.example,Driss,Soir,60,5,2,3,2,2,Oui,Cheville,,,,
+2026/03/03 21:00:00,driss@club.example,Driss,Soir,60,5,2,3,2,2,Oui,Mollet,,,,
+2026/03/04 20:00:00,driss@club.example,Driss,Soir,60,5,2,3,2,2,نعم,الركبة,,,,
+2026/03/05 20:00:00,driss@club.example,Driss,Soir,60,5,2,3,2,2,لا,,,,,
+2026/03/06 20:00:00,driss@club.example,Driss,Soir,60,5,2,3,2,2,peut-être,,,,,
+2026-03-08,emma@club.example,Emma,Soir,60,5,2,3,2,2,No,,Could not participate,To a major extent,To a major extent,Severe
+2026-03-02,emma@club.example,Emma,Matin,60,5,2,3,2,2,No,,Full participation but with health problems,No reduction,No effect,Mild
+2026-03-02,emma@club.example,Emma,Soir,60,5,2,3,2,2,No,,Reduced participation,To a moderate extent,To a minor extent,Moderate
+2026-03-05,emma@club.example,Emma,Soir,60,5,2,3,2,2,No,,Full participation without health problems,No reduction,No effect,No symptoms
+2026-03-12,emma@club.example,Emma,Soir,60,5,2,3,2,2,No,,,,,
+2026-03-01 20:00:00,farid@club.example,Farid,Soir,60,5,2,3,2,2,No,,Somewhat,A little,,
+2026-03-03 20:00:00,farid@club.example,Farid,Soir,60,5,2,3,2,2,No,,,,,0
+2026-03-05 20:00:00,farid@club.example,Farid,Soir,60,5,2,3,2,2,No,,17 - Reduced participation,Not sure,8,MILD
+2026-03-07 20:00:00,farid@club.example,Farid,Soir,60,5,2,3,2,2,No,,25.0,,,
+hier soir,amira@club.example,Amira,Soir,60,5,2,3,2,2,Oui,Dos,25,25,25,25
+2026-03-04 20:00:00,@club.example,,Soir,60,5,2,3,2,2,Oui,Dos,25,25,25,25
+,,,,,,,,,,,,,,,
+2026-03-06 20:00:00,g@club.example,Gina,Soir,45,4
+2026-03-11 20:00:00,gina@club.example,Gina,Soir,,,2,3,2,2,Yes,Hip,,,,
