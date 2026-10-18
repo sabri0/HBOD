@@ -1,4 +1,4 @@
-HBOD developmental simulation study: code (Supplementary File S1)
+HBOD developmental in silico study: code (Supplementary File S1)
 
 Requirements: Python 3.11 with NumPy 2.4, SciPy 1.17, SALib 1.6 and Matplotlib 3.10; Node.js for the parity check of the
 rule-based prototype; Mermaid command-line interface 11.14.0 for the flowcharts (figures/fig1.mmd and figures/fig9.mmd).
@@ -24,8 +24,11 @@ sim/run_sobol.py        Saltelli design for global sensitivity analysis
 sim/run_dose.py         exploratory dose analysis (alert budgets 5%, 10%, 20% and 30%; not part of the frozen plan)
 sim/run_lifeoff.py      check of model structure: life-stress term of illness exposure set to 0 and kept at 0.3 (200 worlds;
                         not part of the frozen plan)
+sim/run_style.py        post hoc check by reporting style: the 1000 evaluation worlds replayed under their original seeds,
+                        keeping athlete-level outcomes (not part of the frozen plan)
 sim/analyze.py          aggregation, confidence intervals, Benjamini-Hochberg q-values, decision rule
 sim/analyze_circ.py     prodrome and progression quartiles; paired comparison of the life-stress runs
+sim/analyze_style.py    results by reporting style (Table S4)
 sim/analyze_sobol.py    Saltelli indices and naive binned first-order indices
 sim/analyze_sobol_cluster.py  binned first-order indices with a bias-corrected cluster bootstrap over Saltelli base blocks;
                         HBOD minus EWMA ACWR differences in the worlds drawn without history matching
@@ -38,8 +41,8 @@ figures/                scripts for Figures 1 to 9 and Figures S1 to S3
 
 Run order (no result files are shipped; every result is regenerated)
 1. sim: python calib.py, then python calib_summ.py (history matching and calibration statistics)
-2. sim: python run_main.py, run_robust.py, run_sobol.py, run_dose.py and run_lifeoff.py
-3. sim: python analyze.py, analyze_rob.py, analyze_sobol.py, analyze_sobol_cluster.py, analyze_dose.py and analyze_circ.py
+2. sim: python run_main.py, run_robust.py, run_sobol.py, run_dose.py, run_lifeoff.py and run_style.py
+3. sim: python analyze.py, analyze_rob.py, analyze_sobol.py, analyze_sobol_cluster.py, analyze_dose.py, analyze_circ.py and analyze_style.py
 4. figures: python fig2.py to fig8.py and figS1.py to figS3.py; mmdc for fig1.mmd and fig9.mmd
 5. verify: python mk_parity.py, then node parity.js (Node.js 22), then python compare_parity.py;
    python kalman_check.py; python const_check.py
@@ -49,7 +52,7 @@ development: prior draws seed 2 and simulation seed 11 (diag.py, cl.py); develop
   frozen plan.
 calibration: Sobol scrambling seeds 1 (pilot), 2 (wave 1) and 3 (wave 2); simulation seeds 1000 and 2000 (pilot), from
   10000 (wave 1) and from 50000 (wave 2).
-main evaluation: simulation seeds 900000 onwards; parameter draw seed 2026.
+main evaluation and reporting-style check: simulation seeds 900000 onwards; parameter draw seed 2026.
 robustness grid: simulation seeds 700000 onwards; draw seed 3030.
 Sobol design: design seed 4040; simulation seeds 500000 onwards; SALib bootstrap seed 7; naive binned bootstrap seed 11;
   cluster bootstrap seed 12.

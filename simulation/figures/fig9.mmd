@@ -1,35 +1,34 @@
-%%{init: {"theme":"base","themeVariables":{"fontFamily":"Arial","fontSize":"19px","primaryColor":"#ffffff","primaryBorderColor":"#000000","lineColor":"#000000","primaryTextColor":"#000000","clusterBkg":"#f4f4f4","clusterBorder":"#000000"},"flowchart":{"wrappingWidth":260,"nodeSpacing":28,"rankSpacing":50}}}%%
-flowchart LR
+%%{init: {"theme":"base","themeVariables":{"fontFamily":"Arial","fontSize":"24px","primaryColor":"#ffffff","primaryBorderColor":"#000000","lineColor":"#000000","primaryTextColor":"#000000","clusterBkg":"#f4f4f4","clusterBorder":"#000000"},"flowchart":{"wrappingWidth":420,"nodeSpacing":18,"rankSpacing":26,"subGraphTitleMargin":{"top":8,"bottom":30}}}}%%
+flowchart TB
   subgraph S1["1. One short daily form"]
-    direction TB
-    A2["Four Hooper items:<br/>sleep, stress,<br/>fatigue and soreness"]
+    direction LR
     A1["Session duration<br/>and RPE"]
+    A2["Four Hooper items:<br/>sleep, stress,<br/>fatigue, soreness"]
     A1 ~~~ A2
   end
   subgraph S2["2. Analysis by HBOD"]
-    direction TB
-    B1["sRPE updates fitness<br/>and fatigue states"]
-    B2["Hooper items update<br/>wellness strain"]
-    B3["Missing report widens<br/>uncertainty; silence is<br/>not read as rest"]
-    B4["Personal coefficients<br/>learned by recursive<br/>least squares"]
-    B1 ~~~ B2 ~~~ B3 ~~~ B4
+    direction LR
+    B1["sRPE updates fitness<br/>and fatigue; Hooper<br/>items update the<br/>wellness strain"]
+    B2["A missing report<br/>widens uncertainty;<br/>silence is not<br/>read as rest"]
+    B3["Personal<br/>coefficients learned<br/>by recursive<br/>least squares"]
+    B1 ~~~ B2 ~~~ B3
   end
   subgraph S3["3. Daily report to staff"]
-    direction TB
-    C1["Posterior probability<br/>for every athlete"]
-    C2["Fixed alert budget,<br/>about 10% of healthy<br/>athlete-days (two athletes<br/>in a squad of 25)"]
-    C3["Acute and chronic loads<br/>shown separately for<br/>planning; no ACWR trigger"]
+    direction LR
+    C1["Posterior<br/>probability for<br/>every athlete"]
+    C2["Fixed alert budget:<br/>about two athletes<br/>a day in a squad<br/>of 25"]
+    C3["Acute and chronic<br/>loads shown for<br/>planning; no<br/>ACWR trigger"]
     C1 --> C2
     C2 ~~~ C3
   end
   subgraph S4["4. Decision by the coach"]
-    direction TB
-    D1["Check-in with each<br/>flagged athlete"]
-    D2["Short targeted deload,<br/>symptom check<br/>or no change"]
+    direction LR
+    D1["Check-in with<br/>each flagged<br/>athlete"]
+    D2["Short targeted<br/>deload, symptom<br/>check or no change"]
     D1 --> D2
   end
-  N["Next day:<br/>new reports reflect<br/>the action taken,<br/>and the cycle<br/>restarts at step 1"]
-  L["Planned layer, to be tested<br/>in the field: supervised<br/>language model that explains<br/>alerts and screens athlete<br/>comments without changing<br/>the probability"]
+  N["Next day: new reports reflect<br/>the action; the cycle restarts"]
+  L["Planned layer, tested in the field:<br/>supervised language model that<br/>explains alerts without changing<br/>the probability"]
   S1 --> S2 --> S3 --> S4 --> N
   S3 -.-> L -.-> S4
   classDef planned stroke-dasharray: 6 4,fill:#ffffff
