@@ -9,8 +9,8 @@ The coach keeps the final decision.
 
 This repository accompanies the paper
 
-> **Development of an autonomous artificial intelligence agent for training load monitoring: a simulation study and
-> closed-loop in silico trial against the acute-to-chronic workload ratio**
+> **Development of an autonomous artificial intelligence agent for training load monitoring: a closed-loop in silico
+> trial against the acute-to-chronic workload ratio**
 
 and holds, as code only:
 
@@ -25,8 +25,8 @@ and holds, as code only:
 The protocol and the frozen analysis plan of the study are registered on the Open Science Framework:
 <https://doi.org/10.17605/OSF.IO/MUWQ3>.
 
-The release that matches the paper, `v1.0.0`, is archived on Zenodo: <https://doi.org/10.5281/zenodo.23342086>
-(all versions: <https://doi.org/10.5281/zenodo.23342085>).
+The release that matches the paper, `v1.1.0`, is archived on Zenodo (all versions:
+<https://doi.org/10.5281/zenodo.23342085>).
 
 ## What the probability means
 
@@ -35,9 +35,9 @@ The release that matches the paper, `v1.0.0`, is archived on Zenodo: <https://do
 
 It is the posterior probability that the fatigue-minus-fitness deficit or the wellness strain exceeds the athlete's
 own baseline of up to 42 previous days by one standard deviation (Equation 14 of the paper). An alert is raised when
-it reaches 0.80. In the simulation study no monitoring signal predicted time-loss onsets well, and HBOD failed one of
-the four pre-specified criteria of the replacement test; its use is an operational preference pending field
-validation, not an evidence-based mandate. HBOD supports the decision; it does not take it.
+it reaches 0.80. In the in silico study no monitoring signal predicted time-loss onsets well, and HBOD met three of
+the four pre-specified criteria but failed the formal replacement test; its use is an operational preference pending
+field validation, not an evidence-based mandate. HBOD supports the decision; it does not take it.
 
 ## The application
 
@@ -128,14 +128,17 @@ npm run build                # rebuilds app/HBOD_App.html from app/src/
 
 `simulation/` is File S1 as submitted with the paper. Its own [`simulation/README.txt`](simulation/README.txt)
 gives the requirements (Python 3.11 with NumPy 2.4, SciPy 1.17, SALib 1.6 and Matplotlib 3.10), the run order and
-every random-number seed. No result file is shipped; every result is regenerated. In that code the working names
+every random-number seed. It includes the post hoc check by reporting style (`sim/run_style.py` and
+`sim/analyze_style.py`, Table S4), which is not part of the frozen plan. No result file is shipped; every result is
+regenerated. In that code the working names
 `v1`, `v2` and `v2_noW` stand for the rule-based prototype, HBOD and HBOD without wellness.
 
 ## Releases
 
 | Release | Content |
 | --- | --- |
-| `v1.0.0` | The release that matches the paper: HBOD application and engine, File S1, parity test. Archived on Zenodo, DOI [10.5281/zenodo.23342086](https://doi.org/10.5281/zenodo.23342086). |
+| `v1.1.0` | The release that matches the paper: HBOD application and engine, File S1 with the check by reporting style (Table S4), parity test. Archived on Zenodo. |
+| `v1.0.0` | Earlier release, matching the version of the paper of 12 October 2026 (subtitled "a simulation study and closed-loop in silico trial against the acute-to-chronic workload ratio"). Same application and engine; File S1 without the check by reporting style. Archived on Zenodo, DOI [10.5281/zenodo.23342086](https://doi.org/10.5281/zenodo.23342086). |
 | `v0.1.0-rule-based-prototype` | **Archived earlier release.** The rule-based prototype, an unpublished development stage of HBOD and the internal comparator of the paper. It is not HBOD as described in the paper and is kept for reference only. |
 
 Releases tuned on field data will carry version numbers, so that each published result maps to a citable release.

@@ -38,7 +38,7 @@
   const STORAGE_PREFIX = 'hbod.';
   const EXPORT_SCHEMA = 'hbod-export/1';
   const PAPER_TITLE = 'Development of an autonomous artificial intelligence agent for training load monitoring: ' +
-    'a simulation study and closed-loop in silico trial against the acute-to-chronic workload ratio';
+    'a closed-loop in silico trial against the acute-to-chronic workload ratio';
   const OSF_LINK = 'https://doi.org/10.17605/OSF.IO/MUWQ3';
   const REASONS = ['injured', 'ill', 'return to play', 'unavailable'];
   const WEEKDAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];

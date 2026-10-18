@@ -1,8 +1,8 @@
 cff-version: 1.2.0
 message: >-
   If you use HBOD, please cite this software release and the paper it accompanies:
-  "Development of an autonomous artificial intelligence agent for training load monitoring: a simulation study
-  and closed-loop in silico trial against the acute-to-chronic workload ratio".
+  "Development of an autonomous artificial intelligence agent for training load monitoring: a closed-loop in
+  silico trial against the acute-to-chronic workload ratio".
 title: "HBOD: on-device application, state-space engine and simulation code"
 abstract: >-
   HBOD (Hooper-Borg-Oslo-Dergaa) is an autonomous artificial intelligence agent for daily monitoring of training
@@ -45,9 +45,9 @@ authors:
   - family-names: Chamari
     given-names: Karim
     affiliation: "Naufar Centre, Doha, Qatar"
-version: 1.0.0
-doi: 10.5281/zenodo.23342086
-date-released: "2026-10-13"
+version: 1.1.0
+doi: 10.5281/zenodo.23342085
+date-released: "2026-10-18"
 license: PolyForm-Noncommercial-1.0.0
 repository-code: "https://github.com/sabri0/HBOD"
 url: "https://github.com/sabri0/HBOD"
@@ -61,7 +61,7 @@ keywords:
   - recursive least squares
   - fitness-fatigue model
   - acute-to-chronic workload ratio
-  - simulation study
+  - in silico trial
 identifiers:
   - type: doi
     value: 10.5281/zenodo.23342085
