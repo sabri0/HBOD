@@ -25,8 +25,8 @@ and holds, as code only:
 The protocol and the frozen analysis plan of the study are registered on the Open Science Framework:
 <https://doi.org/10.17605/OSF.IO/MUWQ3>.
 
-The release that matches the paper, `v1.1.0`, is archived on Zenodo (all versions:
-<https://doi.org/10.5281/zenodo.23342085>).
+The release that matches the paper, `v1.1.0`, is archived on Zenodo: <https://doi.org/10.5281/zenodo.23454242>
+(all versions: <https://doi.org/10.5281/zenodo.23342085>).
 
 ## What the probability means
 
@@ -137,7 +137,7 @@ regenerated. In that code the working names
 
 | Release | Content |
 | --- | --- |
-| `v1.1.0` | The release that matches the paper: HBOD application and engine, File S1 with the check by reporting style (Table S4), parity test. Archived on Zenodo. |
+| `v1.1.0` | The release that matches the paper: HBOD application and engine, File S1 with the check by reporting style (Table S4), parity test. Archived on Zenodo, DOI [10.5281/zenodo.23454242](https://doi.org/10.5281/zenodo.23454242). |
 | `v1.0.0` | Earlier release, matching the version of the paper of 12 October 2026 (subtitled "a simulation study and closed-loop in silico trial against the acute-to-chronic workload ratio"). Same application and engine; File S1 without the check by reporting style. Archived on Zenodo, DOI [10.5281/zenodo.23342086](https://doi.org/10.5281/zenodo.23342086). |
 | `v0.1.0-rule-based-prototype` | **Archived earlier release.** The rule-based prototype, an unpublished development stage of HBOD and the internal comparator of the paper. It is not HBOD as described in the paper and is kept for reference only. |
 
