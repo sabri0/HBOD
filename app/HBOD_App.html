@@ -5,7 +5,7 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; form-action 'none'; base-uri 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="hbod-build" content="e588f3625d49">
+<meta name="hbod-build" content="719420e076ca">
 <title>HBOD · Training load, wellness and health monitor</title>
 <link rel="icon" href="data:,">
 <style data-source="app/src/app.css">
@@ -539,7 +539,7 @@ details.values .panel { margin-top: 10px; }
  * Three states per athlete: fitness G and fatigue H (exponentially weighted means of daily load, in kAU) and a
  * wellness strain s that load does not explain (Hooper item units). The daily output is the posterior probability
  * that the fatigue-minus-fitness deficit or the strain exceeds the athlete's own baseline by kappa SD. It describes
- * how far the modelled state sits beyond that baseline. It is not the probability of an injury or an illness.
+ * the state of the athlete relative to that baseline. It is not the probability of an injury or an illness.
  *
  * The acute-to-chronic workload ratio is not computed here and triggers nothing.
  *
@@ -580,7 +580,7 @@ details.values .panel { margin-top: 10px; }
     auPerKau: 1000.0,           // load enters the filter in thousands of arbitrary units
     varFloor: 1e-10,            // floor of the posterior variances inside the probability
     pClip: 1e-12,               // probabilities are kept inside [1e-12, 1 - 1e-12]
-    alertBudget: 0.10           // default alert budget: share of healthy athlete-days on the daily list
+    alertBudget: 0.10           // default alert rate: share of healthy athlete-days on the daily list
   });
 
   // ------------------------------------------------------------------ standard normal distribution function
@@ -862,7 +862,7 @@ details.values .panel { margin-top: 10px; }
     return res;
   }
 
-  // ------------------------------------------------------------------ alert budget
+  // ------------------------------------------------------------------ alert rate
   /** Largest daily list for a number of healthy athletes: budget x healthy, halves rounded down, at least one. */
   function dailyCap(nHealthy, budget) {
     if (!(nHealthy > 0)) return 0;
@@ -921,7 +921,7 @@ details.values .panel { margin-top: 10px; }
  * Reads the form responses of one squad, prepares the daily inputs of the HBOD engine (engine.js), runs it over
  * every calendar day and assembles what the application, the daily report and the language-model layer show.
  *
- * The decision comes from the engine only: the posterior probability of Equation 14 and the alert budget. Acute
+ * The decision comes from the engine only: the posterior probability of Equation 14 and the alert rate. Acute
  * load, chronic load and their ratio are computed here for planning; nothing in this file reads them to decide,
  * rank, flag or word anything.
  *
@@ -942,15 +942,15 @@ details.values .panel { margin-top: 10px; }
   // ------------------------------------------------------------------ fixed wording
   // Sentences shared by the application, the report and the prompt of the language-model layer.
   const WORDING = Object.freeze({
-    probability: "The probability shows how far the athlete's modelled state sits beyond his or her own baseline. " +
-      'It is not an injury risk.',
+    probability: "HBOD reports the probability that the athlete's modelled state exceeds his or her own baseline. " +
+      'It is not the probability of an injury or illness.',
     probabilityDetail: 'It is the probability that the fatigue-minus-fitness deficit or the wellness strain exceeds ' +
       "the athlete's own baseline of up to 42 previous days by one standard deviation. An alert is raised when it " +
       'reaches 0.80.',
     planning: 'Acute load, chronic load and their ratio are shown for planning only. They do not trigger any decision.',
     missing: 'A missing session load is replaced by the squad median of that day and the uncertainty of fitness and ' +
       'fatigue is multiplied by four. A missing day is never treated as rest.',
-    budget: 'The alert budget ranks athletes by probability and caps the daily list at about 10% of healthy ' +
+    budget: 'The alert rate ranks athletes by probability and caps the daily list at about 10% of healthy ' +
       'athlete-days, about two athletes per day in a squad of 25.',
     gate: 'The health gate sits above load and wellness: it holds, refers or stops an athlete with a declared ' +
       'problem, whatever the probability shows.',
@@ -973,7 +973,7 @@ details.values .panel { margin-top: 10px; }
     'unavailable']);
   const STATUS_LABELS = Object.freeze({
     'listed': "On today's list",
-    'above-outside-budget': "Above the threshold, outside today's alert budget",
+    'above-outside-budget': "Above the threshold, outside today's alert rate",
     'below-threshold': 'Below the threshold',
     'baseline-building': 'Baseline building',
     'unavailable': 'Unavailable'
@@ -1469,7 +1469,7 @@ details.values .panel { margin-top: 10px; }
     const enabled = !b || b.enabled !== false;
     const share = b && b.share !== undefined && b.share !== null ? Number(b.share) : HBODEngine.SETTINGS.alertBudget;
     if (!(share > 0 && share <= 1)) {
-      throw new RangeError('The alert budget must be a share above 0 and at most 1, for example 0.10.');
+      throw new RangeError('The alert rate must be a share above 0 and at most 1, for example 0.10.');
     }
     return { enabled: enabled, share: share };
   }
@@ -1486,7 +1486,7 @@ details.values .panel { margin-top: 10px; }
    *                   in return to play. from and to are dates (both days included); to may be null for a period
    *                   that is still open. reason is free text, usually 'injured', 'ill' or 'return to play'.
    *                   Periods of athletes outside the roster are ignored.
-   *     budget        { enabled: true, share: 0.10 }    alert budget; a share outside (0, 1] throws a RangeError
+   *     budget        { enabled: true, share: 0.10 }    alert rate; a share outside (0, 1] throws a RangeError
    *     endDate       last day to process (default: the last report). Later reports are left out.
    *     startDate     day 0 (default: the earliest report). Earlier reports are left out.
    *     roster        string[]   athletes to include even if they never reported
@@ -1712,7 +1712,7 @@ details.values .panel { margin-top: 10px; }
   /**
    * applyHealthGate(status) -> { ...status, action, text, reason }
    * The three tiers of the health gate, as in the rule-based prototype. It sits above load and wellness and does
-   * not depend on the probability or on the alert budget.
+   * not depend on the probability or on the alert rate.
    *   action  'STOP' (could not participate) | 'REFER' (substantial problem) | 'HOLD' (any flag) | null
    *   text    HEALTH_TEXT[action], or null
    *   reason  the prototype's one-line reason with location and severity, or null
@@ -1822,7 +1822,7 @@ details.values .panel { margin-top: 10px; }
    *     squadMedian         median reported load of the available athletes today, AU (0 when none reported)
    *     reporters           number of available athletes who reported a session load today
    *     budget    { enabled, share, healthy, cap, listed: [names], overflow: [names], ranking: [names] }
-   *               listed = today's list; overflow = at or above the threshold but outside today's alert budget;
+   *               listed = today's list; overflow = at or above the threshold but outside today's alert rate;
    *               ranking = every healthy athlete with a probability, highest first
    *     counts    { athletes, healthy, unavailable, reported, missing, listed, aboveOutsideBudget, belowThreshold,
    *                 baselineBuilding, healthGate }
@@ -2124,7 +2124,7 @@ details.values .panel { margin-top: 10px; }
   const TITLES = Object.freeze({
     gate: 'Health gate',
     list: "Today's list",
-    overflow: "Above the threshold but outside today's alert budget",
+    overflow: "Above the threshold but outside today's alert rate",
     all: 'All athletes',
     missing: 'Missing reports',
     unavailable: 'Unavailable athletes'
@@ -2254,18 +2254,18 @@ details.values .panel { margin-top: 10px; }
   function budgetSetting(day) {
     const b = day.budget, threshold = formatProbability(day.settings.alertProbability);
     if (!b.enabled) {
-      return 'Alert budget off: every healthy athlete whose probability reaches ' + threshold + " is on today's list.";
+      return 'Alert rate off: every healthy athlete whose probability reaches ' + threshold + " is on today's list.";
     }
-    return 'Alert budget on: ' + percent(b.share) + ' of ' + b.healthy + ' healthy ' + plural(b.healthy, 'athlete') +
+    return 'Alert rate on: ' + percent(b.share) + ' of ' + b.healthy + ' healthy ' + plural(b.healthy, 'athlete') +
       ', so at most ' + b.cap + ' ' + plural(b.cap, 'athlete') + " on today's list.";
   }
 
-  // The fixed sentence on the alert budget describes the default setting; another setting is described as it is.
+  // The fixed sentence on the alert rate describes the default setting; another setting is described as it is.
   function budgetWording(day) {
     const b = day.budget;
-    if (!b.enabled) return 'The alert budget is switched off, so the daily list is not capped.';
+    if (!b.enabled) return 'The alert rate is switched off, so the daily list is not capped.';
     if (Math.abs(b.share - 0.10) < 1e-12) return W.budget;
-    return 'The alert budget ranks athletes by probability and caps the daily list at ' + percent(b.share) +
+    return 'The alert rate ranks athletes by probability and caps the daily list at ' + percent(b.share) +
       ' of healthy athletes (the default is 10%).';
   }
 
@@ -2285,7 +2285,7 @@ details.values .panel { margin-top: 10px; }
     const c = day.counts;
     return [
       'Athletes ' + c.athletes, 'healthy ' + c.healthy, "on today's list " + c.listed,
-      'above the threshold, outside the budget ' + c.aboveOutsideBudget, 'health gate ' + c.healthGate,
+      'above the threshold, outside the alert rate ' + c.aboveOutsideBudget, 'health gate ' + c.healthGate,
       'missing reports ' + c.missing, 'unavailable ' + c.unavailable
     ];
   }
@@ -2592,7 +2592,7 @@ details.values .panel { margin-top: 10px; }
    *   options.periodic     the result of buildPeriodic for the same day; its reviews are appended to the report
    * The title "HBOD daily report", the line "Data through {date}" and the fixed sentences on the probability come
    * first. The sections follow in this order: Health gate; Today's list; Above the threshold but outside today's
-   * alert budget (only when there is such an athlete); All athletes, with acute load, chronic load and ratio under
+   * alert rate (only when there is such an athlete); All athletes, with acute load, chronic load and ratio under
    * a "Planning only" heading; Missing reports, to follow up the same day; Unavailable athletes; periodic reviews.
    * The probability is printed with two decimals. Values from the responses file are escaped in the HTML page.
    * In the page each section is a <section data-section="..."> element (health-gate, todays-list, outside-budget,
@@ -2795,8 +2795,8 @@ details.values .panel { margin-top: 10px; }
     '2. Never change the probability, the status or the list. Quote the probability exactly as it is written in ' +
       'the data block, with the same digits.',
     '3. Never call the probability a risk, a likelihood or a chance of injury or illness, and never predict an ' +
-      'injury or an illness. Describe it as how far the modelled state of the athlete sits beyond his or her own ' +
-      'baseline.',
+      'injury or an illness. Describe it as the probability that the modelled state of the athlete exceeds his or ' +
+      'her own baseline.',
     '4. The health gate comes first. When an athlete has a STOP, REFER or HOLD action, begin with it and say that ' +
       'anything clinical is for the medical staff.',
     '5. Give no diagnosis and no advice on treatment or medication.',
@@ -2974,10 +2974,10 @@ details.values .panel { margin-top: 10px; }
         day.engineVersion + '.',
       'Squad today: ' + c.athletes + ' athletes, ' + c.healthy + ' healthy and ' + c.unavailable +
         ' unavailable; ' + c.reported + ' healthy athletes reported a session load and ' + c.missing + ' did not.',
-      'Alert threshold: ' + threshold + '. Alert budget: ' + (b.enabled
+      'Alert threshold: ' + threshold + '. Alert rate: ' + (b.enabled
         ? 'on, ' + percent(b.share) + ' of healthy athletes, at most ' + b.cap + " on today's list."
         : "off, every healthy athlete at or above the threshold is on today's list."),
-      "On today's list: " + c.listed + ". Above the threshold but outside today's alert budget: " +
+      "On today's list: " + c.listed + ". Above the threshold but outside today's alert rate: " +
         c.aboveOutsideBudget + '. Health gate: ' + c.healthGate + '.',
       'Every value below is final. Restate it; do not change it.'
     ].join('\n');
@@ -3119,7 +3119,7 @@ details.values .panel { margin-top: 10px; }
   ];
 
   const ON_LIST_RE = /\bon\s+(?:today's|the)\s+(?:daily\s+|alert\s+)?list\b|\b(?:is|was|been)\s+listed\b/gi;
-  const OUTSIDE_BUDGET_RE = /\boutside\s+(?:today's|the)\s+(?:alert\s+)?budget\b/i;
+  const OUTSIDE_BUDGET_RE = /\boutside\s+(?:today's|the)\s+(?:alert\s+)?(?:rate|budget)\b/i;
   const BELOW_THRESHOLD_RE = /\bbelow\s+the\s+(?:alert\s+)?threshold\b/gi;
   const ABOVE_THRESHOLD_RE =
     /\b(?:above|over|beyond|exceed\w*|reach\w*|cross\w*|pass\w*)\s+the\s+(?:alert\s+)?threshold\b/gi;
@@ -6780,7 +6780,7 @@ details.values .panel { margin-top: 10px; }
  * that contacts a server, and the Content-Security-Policy of the page forbids every connection, so no data can
  * leave the device.
  *
- * The decision shown on every screen is the one of the engine: the posterior probability and the alert budget.
+ * The decision shown on every screen is the one of the engine: the posterior probability and the alert rate.
  * Acute load, chronic load and their ratio are displayed for planning only. Nothing here reads them to colour,
  * order, flag or word anything.
  *
@@ -7295,9 +7295,9 @@ details.values .panel { margin-top: 10px; }
     const gateCount = function (action) { return gated.filter(function (a) { return a.health.action === action; }).length; };
 
     const budgetLine = !scored ? 'no probability before ' + day.settings.baselineStartDay + ' days of data'
-      : b.enabled ? 'alert budget ' + (b.share * 100).toFixed(0) + '%: at most ' + b.cap + ' of ' +
+      : b.enabled ? 'alert rate ' + (b.share * 100).toFixed(0) + '%: at most ' + b.cap + ' of ' +
         plural(b.healthy, 'healthy athlete', 'healthy athletes')
-        : 'alert budget off: every healthy athlete at or above 0.80';
+        : 'alert rate off: every healthy athlete at or above 0.80';
     const tiles = '<div class="tiles">' +
       '<div class="tile"><div class="k">Athletes</div><div class="v num">' + c.athletes + '</div><div class="d">' +
       c.healthy + ' healthy, ' + c.unavailable + ' unavailable</div></div>' +
@@ -7306,7 +7306,7 @@ details.values .panel { margin-top: 10px; }
       (c.missing ? c.missing + ' missing: squad median used' : 'no report missing') + '</div></div>' +
       '<div class="tile primary"><div class="k">On today&#39;s list</div><div class="v num">' + c.listed +
       '</div><div class="d">' + esc(budgetLine) + '</div></div>' +
-      '<div class="tile"><div class="k">Above the threshold, outside the budget</div><div class="v num">' +
+      '<div class="tile"><div class="k">Above the threshold, outside the alert rate</div><div class="v num">' +
       c.aboveOutsideBudget + '</div><div class="d">at or above 0.80, not on today&#39;s list</div></div>' +
       '<div class="tile"><div class="k">Health gate</div><div class="v num">' + c.healthGate + '</div><div class="d">' +
       (c.healthGate ? gateCount('STOP') + ' stop, ' + gateCount('REFER') + ' refer, ' + gateCount('HOLD') + ' hold'
@@ -7323,7 +7323,7 @@ details.values .panel { margin-top: 10px; }
       }).join('') : '<p class="rowtext">No athlete declared a health problem today.</p>') + '</section>';
 
     const listPanel = '<section class="panel"><div class="panel-head"><div><h2>Today&#39;s list</h2><p class="sub">' +
-      (b.enabled ? 'Ranked by probability and capped by the alert budget.'
+      (b.enabled ? 'Ranked by probability and capped by the alert rate.'
         : 'Every healthy athlete at or above 0.80, ranked by probability.') + '</p></div></div>' +
       (listed.length ? listed.map(function (a) {
         return '<div class="list-row"><span class="rank">' + a.rank + '</span>' + athleteLink(a.name) +
@@ -7331,7 +7331,7 @@ details.values .panel { margin-top: 10px; }
           esc(lowerFirst(loadToday(a, day))) + (a.health.action ? ' ' + gateChip(a.health.action) : '') + '</span></div>';
       }).join('') : '<p class="rowtext">' + (scored ? 'No healthy athlete reached 0.80 today.'
         : 'The list starts once ' + day.settings.baselineStartDay + ' days of data build the personal baselines.') + '</p>') +
-      (above.length ? '<p class="rowtext"><b>Above the threshold, outside today&#39;s alert budget:</b> ' +
+      (above.length ? '<p class="rowtext"><b>Above the threshold, outside today&#39;s alert rate:</b> ' +
         above.map(function (a) { return athleteLink(a.name) + ' (' + esc(formatProbability(a.probability)) + ')'; }).join(', ') +
         '.</p>' : '') + '</section>';
 
@@ -7454,7 +7454,7 @@ details.values .panel { margin-top: 10px; }
     const charts =
       chartBox('probability', 'Probability over time', 'scale from 0 to 1; grey background: unavailable',
         key('', COLOUR.navy, 'probability') + key('dash', COLOUR.navy, 'alert threshold 0.80') +
-        key('dot', COLOUR.navy, 'on the daily list') + key('ring', '', 'at or above 0.80, outside the budget')) +
+        key('dot', COLOUR.navy, 'on the daily list') + key('ring', '', 'at or above 0.80, outside the alert rate')) +
       '<div class="grid2">' +
       chartBox('states', 'Modelled fitness, fatigue and deficit', 'kAU',
         key('', COLOUR.deficit, 'deficit (fatigue minus fitness)') + key('', COLOUR.fatigue, 'fatigue') +
@@ -7960,7 +7960,7 @@ details.values .panel { margin-top: 10px; }
       '<section class="panel"><table><thead><tr><th scope="col">Generated</th><th scope="col">Data through</th><th scope="col">Athlete</th>' +
       '<th scope="col">Status</th><th scope="col" class="r">Probability</th><th scope="col">On list</th><th scope="col" class="r">Rank</th>' +
       '<th scope="col">Driver</th><th scope="col">Report</th><th scope="col" class="r">Load used (AU)</th><th scope="col">Health gate</th>' +
-      '<th scope="col" class="r">Budget cap</th><th scope="col">Engine</th></tr></thead><tbody>' +
+      '<th scope="col" class="r">Alert rate cap</th><th scope="col">Engine</th></tr></thead><tbody>' +
       (rows || '<tr><td colspan="13" class="empty">No line yet. One line per athlete is added each time a daily report is generated.</td></tr>') +
       '</tbody></table></section>' +
       '<p class="sub">The exported file holds every column (' + HBODCore.AUDIT_COLUMNS.length + '), with the probability in ' +
@@ -7989,7 +7989,7 @@ details.values .panel { margin-top: 10px; }
       ['Missing session load', 'squad median of that day; uncertainty of fitness and fatigue multiplied by ' + S.imputeInflation],
       ['Injured, ill or in return to play', 'zero load'],
       ['Unit of load inside the filter', 'kAU (1 kAU = ' + S.auPerKau + ' AU)'],
-      ['Alert budget by default', (S.alertBudget * 100).toFixed(0) + '% of healthy athlete-days']
+      ['Alert rate by default', (S.alertBudget * 100).toFixed(0) + '% of healthy athlete-days']
     ];
   }
 
@@ -8003,7 +8003,7 @@ details.values .panel { margin-top: 10px; }
           (b.share * 100).toFixed(0) + '% of ' + plural(day.budget.healthy, 'healthy athlete', 'healthy athletes') + ').'
         : 'On ' + day.date + ': every healthy athlete at or above 0.80 is listed (' + day.counts.listed + ' today).';
     }
-    return '<section class="box"><h2>Alert budget</h2><p class="sub">' + esc(HBODCore.WORDING.budget) + ' Set it before ' +
+    return '<section class="box"><h2>Alert rate</h2><p class="sub">' + esc(HBODCore.WORDING.budget) + ' Set it before ' +
       'the season and review only the athletes on the list.</p><div class="settings-row">' +
       '<label class="field"><input type="checkbox" id="hbod-budget-on" data-change="budget-enabled"' + (b.enabled ? ' checked' : '') +
       '> Cap the daily list</label><label class="field" for="hbod-budget-share">Share of healthy athletes' +
@@ -8044,7 +8044,7 @@ details.values .panel { margin-top: 10px; }
       'questionnaire on health problems is completed once a week.</p>' +
       '<p>For each athlete HBOD keeps three modelled states: fitness, fatigue and a wellness strain that the load does ' +
       'not explain. It updates them every day, widens its uncertainty on days without a report and returns a ' +
-      'probability with a fixed alert budget. The coach decides.</p>' +
+      'probability with a fixed alert rate. The coach decides.</p>' +
       '<p>Acute and chronic loads remain visible for planning, but their ratio no longer triggers decisions. The ' +
       'daily health item, the weekly Oslo questionnaire and the health gate are unchanged.</p></div></section>' +
       '<section class="box"><h2>How to read the screens</h2><ul class="notes prose">' +
@@ -8343,7 +8343,7 @@ details.values .panel { margin-top: 10px; }
     'budget-enabled': function (el) { setBudget(el.checked, state.settings.budget.share); },
     'budget-share': function (el) {
       const percent = Number(el.value);
-      if (!(percent >= 1 && percent <= 100)) { render(); throw new Error('The alert budget must be between 1% and 100%.'); }
+      if (!(percent >= 1 && percent <= 100)) { render(); throw new Error('The alert rate must be between 1% and 100%.'); }
       setBudget(state.settings.budget.enabled, Math.round(percent) / 100);
     }
   };

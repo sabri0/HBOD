@@ -71,15 +71,15 @@ function goldenAnalysis() {
 // ------------------------------------------------------------------ fixed wording
 test('the fixed sentences are those of the paper', () => {
   assert.deepEqual(Object.assign({}, HBODCore.WORDING), {
-    probability: "The probability shows how far the athlete's modelled state sits beyond his or her own baseline. " +
-      'It is not an injury risk.',
+    probability: "HBOD reports the probability that the athlete's modelled state exceeds his or her own baseline. " +
+      'It is not the probability of an injury or illness.',
     probabilityDetail: 'It is the probability that the fatigue-minus-fitness deficit or the wellness strain exceeds ' +
       "the athlete's own baseline of up to 42 previous days by one standard deviation. An alert is raised when it " +
       'reaches 0.80.',
     planning: 'Acute load, chronic load and their ratio are shown for planning only. They do not trigger any decision.',
     missing: 'A missing session load is replaced by the squad median of that day and the uncertainty of fitness and ' +
       'fatigue is multiplied by four. A missing day is never treated as rest.',
-    budget: 'The alert budget ranks athletes by probability and caps the daily list at about 10% of healthy ' +
+    budget: 'The alert rate ranks athletes by probability and caps the daily list at about 10% of healthy ' +
       'athlete-days, about two athletes per day in a squad of 25.',
     gate: 'The health gate sits above load and wellness: it holds, refers or stops an athlete with a declared ' +
       'problem, whatever the probability shows.',
@@ -458,7 +458,7 @@ test('acute load, chronic load and their ratio are not connected to any status, 
   let highRatioNotListed = 0, lowRatioListed = 0;
   for (let t = 0; t < golden.days; t += 1) {
     const day = HBODCore.dayReport(a, a.dates[t]);
-    // statuses and ranks follow from availability, the probability and the alert budget alone
+    // statuses and ranks follow from availability, the probability and the alert rate alone
     const healthy = day.athletes.filter((x) => !x.unavailable);
     const scored = healthy.filter((x) => x.probability !== null).sort((p, q) => q.probability - p.probability);
     const above = scored.filter((x) => x.alert);
@@ -646,7 +646,7 @@ test('notes state in plain sentences what was computed for the athlete today', (
   assert.ok(loadDriven > 0);
 });
 
-test('the alert budget is a setting: share and on or off', () => {
+test('the alert rate is a setting: share and on or off', () => {
   const recs = scenario().records;
   const log = [{ athlete: 'A11', from: HBODCore.addDays(START, 30), to: null, reason: 'return to play' }];
   const wider = { enabled: true, share: 0.30 };

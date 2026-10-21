@@ -48,8 +48,8 @@
     '2. Never change the probability, the status or the list. Quote the probability exactly as it is written in ' +
       'the data block, with the same digits.',
     '3. Never call the probability a risk, a likelihood or a chance of injury or illness, and never predict an ' +
-      'injury or an illness. Describe it as how far the modelled state of the athlete sits beyond his or her own ' +
-      'baseline.',
+      'injury or an illness. Describe it as the probability that the modelled state of the athlete exceeds his or ' +
+      'her own baseline.',
     '4. The health gate comes first. When an athlete has a STOP, REFER or HOLD action, begin with it and say that ' +
       'anything clinical is for the medical staff.',
     '5. Give no diagnosis and no advice on treatment or medication.',
@@ -227,10 +227,10 @@
         day.engineVersion + '.',
       'Squad today: ' + c.athletes + ' athletes, ' + c.healthy + ' healthy and ' + c.unavailable +
         ' unavailable; ' + c.reported + ' healthy athletes reported a session load and ' + c.missing + ' did not.',
-      'Alert threshold: ' + threshold + '. Alert budget: ' + (b.enabled
+      'Alert threshold: ' + threshold + '. Alert rate: ' + (b.enabled
         ? 'on, ' + percent(b.share) + ' of healthy athletes, at most ' + b.cap + " on today's list."
         : "off, every healthy athlete at or above the threshold is on today's list."),
-      "On today's list: " + c.listed + ". Above the threshold but outside today's alert budget: " +
+      "On today's list: " + c.listed + ". Above the threshold but outside today's alert rate: " +
         c.aboveOutsideBudget + '. Health gate: ' + c.healthGate + '.',
       'Every value below is final. Restate it; do not change it.'
     ].join('\n');
@@ -372,7 +372,7 @@
   ];
 
   const ON_LIST_RE = /\bon\s+(?:today's|the)\s+(?:daily\s+|alert\s+)?list\b|\b(?:is|was|been)\s+listed\b/gi;
-  const OUTSIDE_BUDGET_RE = /\boutside\s+(?:today's|the)\s+(?:alert\s+)?budget\b/i;
+  const OUTSIDE_BUDGET_RE = /\boutside\s+(?:today's|the)\s+(?:alert\s+)?(?:rate|budget)\b/i;
   const BELOW_THRESHOLD_RE = /\bbelow\s+the\s+(?:alert\s+)?threshold\b/gi;
   const ABOVE_THRESHOLD_RE =
     /\b(?:above|over|beyond|exceed\w*|reach\w*|cross\w*|pass\w*)\s+the\s+(?:alert\s+)?threshold\b/gi;

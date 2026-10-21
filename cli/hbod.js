@@ -25,7 +25,7 @@ Options:
   --availability FILE   JSON list of periods { "athlete", "from", "to", "reason" } during which an athlete is
                         injured, ill or in return to play ("to" may be null for a period that is still open)
   --date YYYY-MM-DD     day of the report (default: the last day of the data)
-  --budget SHARE        alert budget as a share of healthy athletes (default 0.10)
+  --budget SHARE        alert rate: share of healthy athlete-days on the daily list (default 0.10)
   --no-budget           list every healthy athlete at or above the alert threshold
   --out FILE            write the report as HTML
   --text FILE           write the report as plain text
@@ -103,7 +103,7 @@ function main(argv) {
   if (o.budget !== undefined) {
     share = Number(o.budget);
     if (!(share > 0 && share <= 1)) {
-      throw new UsageError('The alert budget must be a share above 0 and at most 1, for example 0.10.');
+      throw new UsageError('The alert rate must be a share above 0 and at most 1, for example 0.10.');
     }
   }
 

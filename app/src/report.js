@@ -29,7 +29,7 @@
   const TITLES = Object.freeze({
     gate: 'Health gate',
     list: "Today's list",
-    overflow: "Above the threshold but outside today's alert budget",
+    overflow: "Above the threshold but outside today's alert rate",
     all: 'All athletes',
     missing: 'Missing reports',
     unavailable: 'Unavailable athletes'
@@ -159,18 +159,18 @@
   function budgetSetting(day) {
     const b = day.budget, threshold = formatProbability(day.settings.alertProbability);
     if (!b.enabled) {
-      return 'Alert budget off: every healthy athlete whose probability reaches ' + threshold + " is on today's list.";
+      return 'Alert rate off: every healthy athlete whose probability reaches ' + threshold + " is on today's list.";
     }
-    return 'Alert budget on: ' + percent(b.share) + ' of ' + b.healthy + ' healthy ' + plural(b.healthy, 'athlete') +
+    return 'Alert rate on: ' + percent(b.share) + ' of ' + b.healthy + ' healthy ' + plural(b.healthy, 'athlete') +
       ', so at most ' + b.cap + ' ' + plural(b.cap, 'athlete') + " on today's list.";
   }
 
-  // The fixed sentence on the alert budget describes the default setting; another setting is described as it is.
+  // The fixed sentence on the alert rate describes the default setting; another setting is described as it is.
   function budgetWording(day) {
     const b = day.budget;
-    if (!b.enabled) return 'The alert budget is switched off, so the daily list is not capped.';
+    if (!b.enabled) return 'The alert rate is switched off, so the daily list is not capped.';
     if (Math.abs(b.share - 0.10) < 1e-12) return W.budget;
-    return 'The alert budget ranks athletes by probability and caps the daily list at ' + percent(b.share) +
+    return 'The alert rate ranks athletes by probability and caps the daily list at ' + percent(b.share) +
       ' of healthy athletes (the default is 10%).';
   }
 
@@ -190,7 +190,7 @@
     const c = day.counts;
     return [
       'Athletes ' + c.athletes, 'healthy ' + c.healthy, "on today's list " + c.listed,
-      'above the threshold, outside the budget ' + c.aboveOutsideBudget, 'health gate ' + c.healthGate,
+      'above the threshold, outside the alert rate ' + c.aboveOutsideBudget, 'health gate ' + c.healthGate,
       'missing reports ' + c.missing, 'unavailable ' + c.unavailable
     ];
   }
@@ -497,7 +497,7 @@
    *   options.periodic     the result of buildPeriodic for the same day; its reviews are appended to the report
    * The title "HBOD daily report", the line "Data through {date}" and the fixed sentences on the probability come
    * first. The sections follow in this order: Health gate; Today's list; Above the threshold but outside today's
-   * alert budget (only when there is such an athlete); All athletes, with acute load, chronic load and ratio under
+   * alert rate (only when there is such an athlete); All athletes, with acute load, chronic load and ratio under
    * a "Planning only" heading; Missing reports, to follow up the same day; Unavailable athletes; periodic reviews.
    * The probability is printed with two decimals. Values from the responses file are escaped in the HTML page.
    * In the page each section is a <section data-section="..."> element (health-gate, todays-list, outside-budget,

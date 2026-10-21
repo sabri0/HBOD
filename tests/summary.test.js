@@ -79,8 +79,8 @@ test('names can be replaced by codes before the block leaves the device, and res
 });
 
 test('a stored summary carries the probability of the engine next to it', () => {
-  const text = 'Athlete 05: the probability is 0.77, which shows how far the modelled state sits beyond the ' +
-    'athlete\'s own baseline; it is below the threshold of 0.80 and it is not an injury risk.';
+  const text = 'Athlete 05: the probability is 0.77, which is the probability that the modelled state exceeds ' +
+    'the athlete\'s own baseline; it is below the threshold of 0.80 and it is not the probability of an injury or illness.';
   const r = HBODSummary.makeRecord({ dayReport: day, athlete: 'Athlete 05', summary: text, model: 'some-model',
     createdAt: '2026-06-27T20:15:00Z' });
   assert.equal(r.schema, 'hbod-summary/1');
@@ -121,7 +121,7 @@ test('the stored probability never comes from the text of the model', () => {
 test('the automatic check accepts a faithful restatement', () => {
   const ok = HBODSummary.checkFaithfulness(
     'Athlete 24: the probability is 1.00 and the athlete is on today\'s list, mainly driven by wellness strain. ' +
-    'It shows how far the modelled state sits beyond his or her own baseline and it is not an injury risk.',
+    'It is the probability that the modelled state exceeds his or her own baseline and it is not the probability of an injury or illness.',
     listed, { dayReport: day });
   assert.deepEqual(ok, { ok: true, issues: [], codes: [] });
   const gate = HBODSummary.checkFaithfulness(

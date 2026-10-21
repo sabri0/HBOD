@@ -4,7 +4,7 @@
 training load, wellness and health. Athletes report session duration, rating of perceived exertion (Borg CR-10) and
 four Hooper items on one short daily form. For each athlete, HBOD keeps three modelled states (fitness, fatigue and
 a wellness strain that load does not explain), updates them every day with a Kalman filter and athlete-specific
-learning, widens its uncertainty when a report is missing, and returns a **probability** with a fixed alert budget.
+learning, widens its uncertainty when a report is missing, and returns a **probability** with a fixed alert rate.
 The coach keeps the final decision.
 
 This repository accompanies the paper
@@ -12,12 +12,13 @@ This repository accompanies the paper
 > **Development of an autonomous artificial intelligence agent for training load monitoring: a closed-loop in silico
 > trial against the acute-to-chronic workload ratio**
 
-and holds, as code only:
+and holds the code of the study and its Supplementary Materials:
 
 | Folder | Content |
 | --- | --- |
 | [`app/`](app/) | The HBOD web application: one self-contained file, [`app/HBOD_App.html`](app/HBOD_App.html), built from `app/src/`. |
 | [`simulation/`](simulation/) | Supplementary File S1 of the paper, unchanged: the simulator, the nine monitoring signals, the experiments, the analyses, the verification scripts and the figure scripts. |
+| [`supplementary/`](supplementary/) | The Supplementary Materials of the paper as a Word document: Figures S1 to S3 and Tables S1 to S4. |
 | [`parity/`](parity/) | The parity test of the JavaScript engine of the application against the Python code of File S1. |
 | [`cli/`](cli/) | The same analytical core on the command line, and the optional language-model layer. |
 | [`tests/`](tests/) | Automated tests (Node.js built-in runner, no dependency). |
@@ -25,13 +26,13 @@ and holds, as code only:
 The protocol and the frozen analysis plan of the study are registered on the Open Science Framework:
 <https://doi.org/10.17605/OSF.IO/MUWQ3>.
 
-The release that matches the paper, `v1.1.0`, is archived on Zenodo: <https://doi.org/10.5281/zenodo.23454242>
-(all versions: <https://doi.org/10.5281/zenodo.23342085>).
+The release that matches the paper, `v1.2.0`, is archived on Zenodo (all versions:
+<https://doi.org/10.5281/zenodo.23342085>).
 
 ## What the probability means
 
-> The probability shows how far the athlete's modelled state sits beyond his or her own baseline. It is not an
-> injury risk.
+> HBOD reports the probability that the athlete's modelled state exceeds his or her own baseline. It is not the
+> probability of an injury or illness.
 
 It is the posterior probability that the fatigue-minus-fitness deficit or the wellness strain exceeds the athlete's
 own baseline of up to 42 previous days by one standard deviation (Equation 14 of the paper). An alert is raised when
@@ -56,7 +57,7 @@ What it does:
 | --- | --- |
 | Decision engine | The HBOD state-space engine of File S1 (`simulation/sim/engines.py`), Equations 7 to 14 of Section 2.5, with the settings of Table S2 (below). |
 | Alert | When the posterior probability reaches 0.80. |
-| Alert budget | A setting ranks the healthy athletes by probability and caps the daily list at about 10% of healthy athlete-days, about two athletes per day in a squad of 25. Athletes at or above 0.80 beyond the cap are shown as above the threshold, outside the budget. |
+| Alert rate | A setting ranks the healthy athletes by probability and caps the daily list at about 10% of healthy athlete-days, about two athletes per day in a squad of 25. Athletes at or above 0.80 beyond the cap are shown as above the threshold, outside the alert rate. |
 | Missing reports | A missing session load is replaced by the squad median of that day, and the uncertainty of fitness and fatigue is multiplied by four. A missing day is never treated as rest. |
 | Unavailable athletes | Athletes who are injured, ill or in return to play (availability log kept by the staff) contribute zero load and are never on the list. |
 | Acute-to-chronic workload ratio | Acute load, chronic load and their ratio stay on screen **for planning only**. The ratio raises no flag and triggers no decision. |
@@ -76,7 +77,7 @@ What it does:
 | Wellness correction | from day 14, only on days with all four Hooper items |
 | Personal baseline | from day 28, using up to 42 previous days |
 | Exceedance and alert | κ = 1 SD; alert when the posterior probability reaches 0.80 |
-| Alert budget (application) | 10% of healthy athlete-days by default |
+| Alert rate (application) | 10% of healthy athlete-days by default |
 
 ### Input
 
@@ -124,6 +125,13 @@ npm test                     # node --test; Node.js 22, no package to install
 npm run build                # rebuilds app/HBOD_App.html from app/src/
 ```
 
+## Supplementary Materials
+
+[`supplementary/HBOD_InSilico_Supplementary_Materials.docx`](supplementary/HBOD_InSilico_Supplementary_Materials.docx)
+holds Figures S1 to S3 and Tables S1 to S4 of the paper (the frozen analysis plan, the constants of the data-generating
+model and the settings of HBOD, the verification checks and the results by reporting style). The paper cites the
+Zenodo archive of this repository for both the Supplementary Materials and File S1.
+
 ## Simulation code (Supplementary File S1)
 
 `simulation/` is File S1 as submitted with the paper. Its own [`simulation/README.txt`](simulation/README.txt)
@@ -131,13 +139,16 @@ gives the requirements (Python 3.11 with NumPy 2.4, SciPy 1.17, SALib 1.6 and Ma
 every random-number seed. It includes the post hoc check by reporting style (`sim/run_style.py` and
 `sim/analyze_style.py`, Table S4), which is not part of the frozen plan. No result file is shipped; every result is
 regenerated. In that code the working names
-`v1`, `v2` and `v2_noW` stand for the rule-based prototype, HBOD and HBOD without wellness.
+`v1`, `v2` and `v2_noW` stand for the rule-based prototype, HBOD and HBOD without wellness, and `budget` stands for
+the alert rate of the paper (the application and the command line keep the same word in their internal names and
+options, such as `--budget`).
 
 ## Releases
 
 | Release | Content |
 | --- | --- |
-| `v1.1.0` | The release that matches the paper: HBOD application and engine, File S1 with the check by reporting style (Table S4), parity test. Archived on Zenodo, DOI [10.5281/zenodo.23454242](https://doi.org/10.5281/zenodo.23454242). |
+| `v1.2.0` | The release that matches the paper: HBOD application and engine, File S1 (revised Figures 1, 3 and 9), Supplementary Materials (Figures S1 to S3, Tables S1 to S4), parity test. The application and this README write "alert rate" and describe the probability as the probability that the modelled state exceeds the athlete's own baseline. |
+| `v1.1.0` | Earlier release: HBOD application and engine, File S1 with the check by reporting style (Table S4), parity test; without the Supplementary Materials and before the revision of Figures 1, 3 and 9. Archived on Zenodo, DOI [10.5281/zenodo.23454242](https://doi.org/10.5281/zenodo.23454242). |
 | `v1.0.0` | Earlier release, matching the version of the paper of 12 October 2026 (subtitled "a simulation study and closed-loop in silico trial against the acute-to-chronic workload ratio"). Same application and engine; File S1 without the check by reporting style. Archived on Zenodo, DOI [10.5281/zenodo.23342086](https://doi.org/10.5281/zenodo.23342086). |
 | `v0.1.0-rule-based-prototype` | **Archived earlier release.** The rule-based prototype, an unpublished development stage of HBOD and the internal comparator of the paper. It is not HBOD as described in the paper and is kept for reference only. |
 

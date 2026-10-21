@@ -1,6 +1,6 @@
 // Tests of the HBOD state-space engine (app/src/engine.js): the settings of Table S2, the behaviours the paper
 // states for missing reports, unavailable athletes, the wellness correction, the personal baseline, the alert and
-// the alert budget, and a golden comparison with File S1 that needs no Python (fixtures/engine_golden.json,
+// the alert rate, and a golden comparison with File S1 that needs no Python (fixtures/engine_golden.json,
 // written by parity/mk_golden.py).
 'use strict';
 const test = require('node:test');
@@ -275,7 +275,7 @@ test('the standard normal distribution function', () => {
   assert.equal(HBODEngine.normCdf(40), 1);
 });
 
-// ------------------------------------------------------------------ requirement 5: alert budget
+// ------------------------------------------------------------------ requirement 5: alert rate
 function athlete(id, probability, unavailable) {
   const p = probability;
   return {
@@ -297,7 +297,7 @@ test('the daily cap is about 10% of healthy athletes: two per day for 21 and for
   assert.equal(HBODEngine.dailyCap(25, 0.05), 1);
 });
 
-test('the alert budget ranks healthy athletes by probability and caps the daily list', () => {
+test('the alert rate ranks healthy athletes by probability and caps the daily list', () => {
   const squad = [];
   for (let i = 0; i < 25; i++) squad.push(athlete('P' + String(i).padStart(2, '0'), 0.10 + 0.01 * i));
   squad[3] = athlete('P03', 0.97);

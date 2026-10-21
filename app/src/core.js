@@ -4,7 +4,7 @@
  * Reads the form responses of one squad, prepares the daily inputs of the HBOD engine (engine.js), runs it over
  * every calendar day and assembles what the application, the daily report and the language-model layer show.
  *
- * The decision comes from the engine only: the posterior probability of Equation 14 and the alert budget. Acute
+ * The decision comes from the engine only: the posterior probability of Equation 14 and the alert rate. Acute
  * load, chronic load and their ratio are computed here for planning; nothing in this file reads them to decide,
  * rank, flag or word anything.
  *
@@ -25,15 +25,15 @@
   // ------------------------------------------------------------------ fixed wording
   // Sentences shared by the application, the report and the prompt of the language-model layer.
   const WORDING = Object.freeze({
-    probability: "The probability shows how far the athlete's modelled state sits beyond his or her own baseline. " +
-      'It is not an injury risk.',
+    probability: "HBOD reports the probability that the athlete's modelled state exceeds his or her own baseline. " +
+      'It is not the probability of an injury or illness.',
     probabilityDetail: 'It is the probability that the fatigue-minus-fitness deficit or the wellness strain exceeds ' +
       "the athlete's own baseline of up to 42 previous days by one standard deviation. An alert is raised when it " +
       'reaches 0.80.',
     planning: 'Acute load, chronic load and their ratio are shown for planning only. They do not trigger any decision.',
     missing: 'A missing session load is replaced by the squad median of that day and the uncertainty of fitness and ' +
       'fatigue is multiplied by four. A missing day is never treated as rest.',
-    budget: 'The alert budget ranks athletes by probability and caps the daily list at about 10% of healthy ' +
+    budget: 'The alert rate ranks athletes by probability and caps the daily list at about 10% of healthy ' +
       'athlete-days, about two athletes per day in a squad of 25.',
     gate: 'The health gate sits above load and wellness: it holds, refers or stops an athlete with a declared ' +
       'problem, whatever the probability shows.',
@@ -56,7 +56,7 @@
     'unavailable']);
   const STATUS_LABELS = Object.freeze({
     'listed': "On today's list",
-    'above-outside-budget': "Above the threshold, outside today's alert budget",
+    'above-outside-budget': "Above the threshold, outside today's alert rate",
     'below-threshold': 'Below the threshold',
     'baseline-building': 'Baseline building',
     'unavailable': 'Unavailable'
@@ -552,7 +552,7 @@
     const enabled = !b || b.enabled !== false;
     const share = b && b.share !== undefined && b.share !== null ? Number(b.share) : HBODEngine.SETTINGS.alertBudget;
     if (!(share > 0 && share <= 1)) {
-      throw new RangeError('The alert budget must be a share above 0 and at most 1, for example 0.10.');
+      throw new RangeError('The alert rate must be a share above 0 and at most 1, for example 0.10.');
     }
     return { enabled: enabled, share: share };
   }
@@ -569,7 +569,7 @@
    *                   in return to play. from and to are dates (both days included); to may be null for a period
    *                   that is still open. reason is free text, usually 'injured', 'ill' or 'return to play'.
    *                   Periods of athletes outside the roster are ignored.
-   *     budget        { enabled: true, share: 0.10 }    alert budget; a share outside (0, 1] throws a RangeError
+   *     budget        { enabled: true, share: 0.10 }    alert rate; a share outside (0, 1] throws a RangeError
    *     endDate       last day to process (default: the last report). Later reports are left out.
    *     startDate     day 0 (default: the earliest report). Earlier reports are left out.
    *     roster        string[]   athletes to include even if they never reported
@@ -795,7 +795,7 @@
   /**
    * applyHealthGate(status) -> { ...status, action, text, reason }
    * The three tiers of the health gate, as in the rule-based prototype. It sits above load and wellness and does
-   * not depend on the probability or on the alert budget.
+   * not depend on the probability or on the alert rate.
    *   action  'STOP' (could not participate) | 'REFER' (substantial problem) | 'HOLD' (any flag) | null
    *   text    HEALTH_TEXT[action], or null
    *   reason  the prototype's one-line reason with location and severity, or null
@@ -905,7 +905,7 @@
    *     squadMedian         median reported load of the available athletes today, AU (0 when none reported)
    *     reporters           number of available athletes who reported a session load today
    *     budget    { enabled, share, healthy, cap, listed: [names], overflow: [names], ranking: [names] }
-   *               listed = today's list; overflow = at or above the threshold but outside today's alert budget;
+   *               listed = today's list; overflow = at or above the threshold but outside today's alert rate;
    *               ranking = every healthy athlete with a probability, highest first
    *     counts    { athletes, healthy, unavailable, reported, missing, listed, aboveOutsideBudget, belowThreshold,
    *                 baselineBuilding, healthGate }

@@ -23,7 +23,7 @@ flowchart TB
   end
   subgraph D["Performance measures"]
     direction LR
-    D1["Open loop,<br/>1000 worlds: AUROC,<br/>AP, net benefit,<br/>10% alert budget"]
+    D1["Open loop,<br/>1000 worlds: AUROC,<br/>AP, net benefit,<br/>10% alert rate"]
     D2["Closed-loop trial:<br/>deload versus<br/>random alerts (CRN)"]
     D3["Robustness grid,<br/>Sobol indices, dose<br/>analysis, model and<br/>reporting checks"]
     D1 ~~~ D2 ~~~ D3

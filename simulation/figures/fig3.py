@@ -19,7 +19,7 @@ for i, e in enumerate(ORDER):
     ax.plot([med], [i], 'o', ms=3.2, mfc='white', mec='black', mew=0.8)
 ax.axvline(0.5, color='black', lw=0.6, ls=(0, (2, 2)))
 ax.set_yticks(range(len(ORDER))); ax.set_yticklabels([NAME[e] for e in ORDER])
-ax.set_xlabel('AUROC per simulated world, any onset')
+ax.set_xlabel('AUROC per simulated world, any injury or illness onset')
 ax.set_xlim(0.25, 0.85); ax.set_ylim(-0.6, len(ORDER) - 0.3)
 panel(ax, 'a', x=-0.42)
 # b: injury vs illness means with CI

@@ -10,6 +10,7 @@ v1      rule-based prototype (an unpublished development stage of HBOD)
 v2      HBOD, the adaptive state-space agent (Kalman filter with recursive least squares)
 v2_noW  HBOD without wellness (ablation without any observation update)
 These working names match the labels of the retrospective registration (https://doi.org/10.17605/OSF.IO/MUWQ3).
+In the code, budget denotes the alert rate of the paper (the share of healthy athlete-days on which a signal alerts).
 
 sim/hbodsim.py          data-generating model (training plan, Busso physiology, injury and illness hazards, reporting model);
                         LIFE_ILL sets the effect of life stress on illness exposure (0.3 in all frozen analyses)
@@ -21,10 +22,10 @@ sim/experiments.py      open-loop and closed-loop experiment functions
 sim/run_main.py         main evaluation (1000 worlds, open and closed loop)
 sim/run_robust.py       five-by-five reporting robustness grid
 sim/run_sobol.py        Saltelli design for global sensitivity analysis
-sim/run_dose.py         exploratory dose analysis (alert budgets 5%, 10%, 20% and 30%; not part of the frozen plan)
+sim/run_dose.py         exploratory dose analysis (alert rates 5%, 10%, 20% and 30%; not part of the frozen plan)
 sim/run_lifeoff.py      check of model structure: life-stress term of illness exposure set to 0 and kept at 0.3 (200 worlds;
                         not part of the frozen plan)
-sim/run_style.py        post hoc check by reporting style: the 1000 evaluation worlds replayed under their original seeds,
+sim/run_style.py        post-hoc check by reporting style: the 1000 evaluation worlds replayed under their original seeds,
                         keeping athlete-level outcomes (not part of the frozen plan)
 sim/analyze.py          aggregation, confidence intervals, Benjamini-Hochberg q-values, decision rule
 sim/analyze_circ.py     prodrome and progression quartiles; paired comparison of the life-stress runs

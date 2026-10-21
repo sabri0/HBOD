@@ -34,7 +34,7 @@ test('the report is titled HBOD daily report and names the day of the data', () 
   assert.ok(seen.includes('Data through 2026-06-27'));
 });
 
-test('the report says what the probability shows and that it is not an injury risk (requirement 6)', () => {
+test('the report says what the probability is and that it is not the probability of an injury or illness (requirement 6)', () => {
   for (const out of [report.text, seen]) {
     assert.ok(out.includes(W.probability), 'the sentence on the meaning of the probability is present verbatim');
     assert.ok(out.includes(W.probabilityDetail));
@@ -47,7 +47,8 @@ test('the probability is never presented as a risk, a likelihood or a chance of 
   for (const out of [report.text, seen]) {
     const withoutDisclaimer = out.split(W.probability).join(' ');
     assert.doesNotMatch(withoutDisclaimer, /\brisk/i, 'the word risk appears only inside the disclaimer');
-    assert.doesNotMatch(out, /likelihood|chance of|injury probability|probability of (an )?(injury|illness)/i);
+    assert.doesNotMatch(withoutDisclaimer, /likelihood|chance of|injury probability|probability of (an )?(injury|illness)/i,
+      'the probability of an injury or illness is named only inside the disclaimer');
     assert.doesNotMatch(out, /readiness|danger zone|sweet spot/i);
   }
 });
@@ -56,7 +57,7 @@ test('acute load, chronic load and their ratio are shown for planning only and e
   assert.ok(report.text.includes(W.planning));
   assert.ok(seen.includes(W.planning));
   // text report: outside the section listing all athletes, the planning indices do not appear at all
-  for (const title of ['Health gate', "Today's list", "Above the threshold but outside today's alert budget",
+  for (const title of ['Health gate', "Today's list", "Above the threshold but outside today's alert rate",
     'Missing reports', 'Unavailable athletes']) {
     for (const line of sectionOf(report.text, title)) {
       assert.doesNotMatch(line, /\bratio\b|acute load|chronic load|ACWR|workload/i, title + ': ' + line);
@@ -97,7 +98,7 @@ test('health-gate athletes come first, with the texts of the gate', () => {
   assert.ok(seen.indexOf('Health gate') < seen.indexOf("Today's list"));
 });
 
-test("today's list is ranked by probability, capped by the alert budget, and states the cap", () => {
+test("today's list is ranked by probability, capped by the alert rate, and states the cap", () => {
   const list = sectionOf(report.text, "Today's list");
   assert.ok(list.includes(W.budget));
   assert.ok(list.some(function (l) { return /at most 2 athletes on today's list/.test(l); }), list.join('\n'));
@@ -105,16 +106,16 @@ test("today's list is ranked by probability, capped by the alert budget, and sta
     .map(function (l) { return l.slice(0, 10); });
   assert.deepEqual(names, day.budget.listed);
   assert.equal(names.length, 2);
-  const over = sectionOf(report.text, "Above the threshold but outside today's alert budget")
+  const over = sectionOf(report.text, "Above the threshold but outside today's alert rate")
     .filter(function (l) { return /^Athlete \d\d \(rank/.test(l); }).map(function (l) { return l.slice(0, 10); });
   assert.deepEqual(over, day.budget.overflow);
 });
 
-test('with the alert budget switched off every healthy athlete at or above 0.80 is listed', () => {
+test('with the alert rate switched off every healthy athlete at or above 0.80 is listed', () => {
   const off = HBODCore.dayReport(squad.analyse({ budget: { enabled: false, share: 0.10 } }));
   assert.deepEqual(off.budget.listed, day.budget.listed.concat(day.budget.overflow));
   const text = HBODReport.buildDailyReport(off, { generatedAt: '2026-10-13T12:00:00' }).text;
-  assert.match(text, /Alert budget off/i);
+  assert.match(text, /Alert rate off/i);
 });
 
 test('missing reports are listed for a same-day follow-up and are never read as rest', () => {

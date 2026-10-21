@@ -10,7 +10,7 @@
  * Three states per athlete: fitness G and fatigue H (exponentially weighted means of daily load, in kAU) and a
  * wellness strain s that load does not explain (Hooper item units). The daily output is the posterior probability
  * that the fatigue-minus-fitness deficit or the strain exceeds the athlete's own baseline by kappa SD. It describes
- * how far the modelled state sits beyond that baseline. It is not the probability of an injury or an illness.
+ * the state of the athlete relative to that baseline. It is not the probability of an injury or an illness.
  *
  * The acute-to-chronic workload ratio is not computed here and triggers nothing.
  *
@@ -51,7 +51,7 @@
     auPerKau: 1000.0,           // load enters the filter in thousands of arbitrary units
     varFloor: 1e-10,            // floor of the posterior variances inside the probability
     pClip: 1e-12,               // probabilities are kept inside [1e-12, 1 - 1e-12]
-    alertBudget: 0.10           // default alert budget: share of healthy athlete-days on the daily list
+    alertBudget: 0.10           // default alert rate: share of healthy athlete-days on the daily list
   });
 
   // ------------------------------------------------------------------ standard normal distribution function
@@ -333,7 +333,7 @@
     return res;
   }
 
-  // ------------------------------------------------------------------ alert budget
+  // ------------------------------------------------------------------ alert rate
   /** Largest daily list for a number of healthy athletes: budget x healthy, halves rounded down, at least one. */
   function dailyCap(nHealthy, budget) {
     if (!(nHealthy > 0)) return 0;

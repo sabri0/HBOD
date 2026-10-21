@@ -1,6 +1,7 @@
 // Tests of requirements 1, 3, 6 and 12 on the text of the repository: HBOD is the only name of the system, the
-// earlier rules are "the rule-based prototype", the probability is never presented as a risk, the ratio carries no
-// threshold, and the repository holds code, not documents.
+// earlier rules are "the rule-based prototype", the share of healthy athlete-days on the daily list is the alert
+// rate, the probability is never presented as a risk, the ratio carries no threshold, and the repository holds code
+// and the Supplementary Materials of the paper, no other document.
 'use strict';
 const test = require('node:test');
 const assert = require('node:assert/strict');
@@ -90,9 +91,7 @@ test('the probability is never called a risk', () => {
   assert.doesNotMatch(HBODSummary.buildDataBlock(squad.day), /\brisk/i, 'the data block never uses the word');
   // outside the screening code and the prompt, nothing may assert a risk
   for (const f of ['app/src/ui.js', 'app/src/report.js', 'app/src/core.js', 'app/src/template.html', 'cli/hbod.js']) {
-    const text = read(f).split('The probability shows how far the athlete\'s modelled state sits beyond his or her ' +
-      'own baseline. It is not an injury risk.').join('').replace(/It is not an injury risk\./g, '')
-      .replace(/not an injury risk/gi, '');
+    const text = read(f).replace(/It is not an injury risk\./g, '').replace(/not an injury risk/gi, '');
     assert.doesNotMatch(text, /\brisk/i, f);
   }
 });
@@ -119,9 +118,32 @@ test('nothing in the screens colours, orders or flags by the ratio', () => {
   assert.match(ui, /planning only/i);
 });
 
-test('the repository holds code, not documents', () => {
+// The one document that the repository holds: the Supplementary Materials of the paper (Figures S1 to S3, Tables S1 to S4).
+const SUPPLEMENTARY = 'supplementary/HBOD_InSilico_Supplementary_Materials.docx';
+
+test('the share of healthy athlete-days on the daily list is called the alert rate, not a budget', () => {
+  for (const f of worded) {
+    assert.doesNotMatch(read(f), /alert[ -]budget/i, f + ' holds the old wording of the alert rate');
+  }
+  const HBODCore = require('../app/src/core.js');
+  for (const sentence of Object.values(HBODCore.WORDING).concat(Object.values(HBODCore.STATUS_LABELS))) {
+    assert.doesNotMatch(sentence, /budget/i, sentence);
+  }
+  assert.match(HBODCore.WORDING.budget, /^The alert rate /);
+});
+
+test('the probability is described as the probability that the modelled state exceeds the own baseline', () => {
+  const HBODCore = require('../app/src/core.js');
+  assert.match(HBODCore.WORDING.probability, /probability that the athlete's modelled state exceeds his or her own baseline/);
+  assert.match(HBODCore.WORDING.probability, /not the probability of an injury or illness/);
+  for (const f of worded) assert.doesNotMatch(read(f), /sits beyond/i, f + ' holds the old description of the probability');
+});
+
+test('the repository holds code and the Supplementary Materials, no other document', () => {
   const documents = files.filter(function (f) { return /\.(docx?|xlsx?|pptx?|pdf|odt|rtf|pages)$/i.test(f); });
-  assert.deepEqual(documents, []);
+  assert.deepEqual(documents, [SUPPLEMENTARY]);
+  const head = fs.readFileSync(path.join(ROOT, SUPPLEMENTARY)).subarray(0, 4);
+  assert.deepEqual(Array.from(head), [0x50, 0x4b, 0x03, 0x04], 'a Word document is a zip archive');
   const markdown = files.filter(function (f) { return /\.md$/i.test(f); });
   for (const f of markdown) assert.ok(['README.md', 'LICENSE.md'].includes(f), f + ' is a note, not code');
   const stray = files.filter(function (f) { return /(^|\/)(notes?|todo|plan|draft|ledger|manuscript|response)[^/]*$/i.test(f); });

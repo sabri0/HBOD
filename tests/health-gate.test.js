@@ -204,7 +204,7 @@ test('the reason line carries the location and the severity', () => {
   assert.deepEqual(asState(none), [false, null, null, false, false, false, null, null, null]);
 });
 
-test('the gate does not depend on the probability, the alert budget or availability', () => {
+test('the gate does not depend on the probability, the alert rate or availability', () => {
   const dataset = ref.datasets.S6_slice;
   const records = load(dataset);
   const last = dataset.dates[dataset.dates.length - 1];
